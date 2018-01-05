@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.tm.pro.anno.DataSource;
 import org.tm.pro.entity.AnalysisData;
 import org.tm.pro.entity.AnalysisDataExample;
 import org.tm.pro.entity.AnalysisDataExample.Criteria;
@@ -18,11 +19,13 @@ public class AnalysisDataServiceImpl implements AnalysisDataService {
 	AnalysisDataMapper analysisDataMapper;
 
 	@Override
+	@DataSource("master")
 	public int save(AnalysisData analysisData) {
 		return analysisDataMapper.insert(analysisData);
 	}
 
 	@Override
+	@DataSource("slave")
 	public List<AnalysisData> getAnalysisDatas(String smac, String dmac, long startTime, long endTime) {
 		AnalysisDataExample example = new AnalysisDataExample();
 
