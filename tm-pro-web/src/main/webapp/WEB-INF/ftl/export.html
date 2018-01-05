@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- BootStrap Css -->
+<link
+	href="${rc.contextPath}/statics/ui-frame/css/bootstrap.min14ed.css?v=3.3.6"
+	rel="stylesheet">
+<!-- 字体图标 Css -->
+<link
+	href="${rc.contextPath}/statics/ui-frame/css/font-awesome.min93e3.css?v=4.4.0"
+	rel="stylesheet">
+<!-- Css 动画 -->
+<link href="${rc.contextPath}/statics/ui-frame/css/animate.min.css"
+	rel="stylesheet">
+<!-- BootStrap 日期插件 -->
+<link
+	href="${rc.contextPath}/statics/ui-frame/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet">
+<!-- Checkbox的美化插件 -->
+<link
+	href="${rc.contextPath}/statics/ui-frame/css/plugins/iCheck/custom.css"
+	rel="stylesheet">
+
+<!-- 基本样式 -->
+<link
+	href="${rc.contextPath}/statics/ui-frame/css/style.min862f.css?v=4.1.0"
+	rel="stylesheet">
+</head>
+<body class="gray-bg">
+	<div id="app" class="wrapper wrapper-content">
+		<div class="row">
+			<div class="col-xs-6">
+				<div class="form-group">
+					<label class="font-noraml">设备Mac</label>
+					<div class='input-group' style="width: 100%;">
+						<input type='text' class="form-control" id="dmac" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6">
+				<div class="form-group">
+					<label class="font-noraml">开始日期</label>
+					<div class='input-group' style="width: 100%;">
+						<input type='text' class="form-control" id="startTime" />
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-6">
+				<div class="form-group">
+					<label class="font-noraml">结束日期</label>
+					<div class='input-group' style="width: 100%;">
+						<input type='text' class="form-control" id="endTime" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6">
+				<div class="form-group">
+					<label class="font-noraml">导出条数</label>
+					<div class="input-group" style="width: 100%;">
+						<select id="size" class="form-control">
+							<option value="100">100条</option>
+							<option value="500">500条</option>
+							<option value="1000">1000条</option>
+							<option value="5000">5000条</option>
+							<option value="10000">10000条</option>
+							<option value="0">全部</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="form-group">
+					<div class="btn-group" style="display: block;">
+						<button id="exportBtn" class="btn btn-primary" type="button">导出</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Jquery Dom -->
+	<script
+		src="${rc.contextPath}/statics/ui-frame/js/jquery.min.js?v=2.1.4"></script>
+	<!-- BootStrap Js -->
+	<script
+		src="${rc.contextPath}/statics/ui-frame/js/bootstrap.min.js?v=3.3.6"></script>
+	<!-- Checkbox的美化插件 -->
+	<script
+		src="${rc.contextPath}/statics/ui-frame/js/plugins/iCheck/icheck.min.js"></script>
+	<script
+		src="${rc.contextPath}/statics/ui-frame/js/plugins/layer/layer.min.js"></script>
+	<!-- 日期格式化插件 -->
+	<script
+		src="${rc.contextPath}/statics/ui-frame/plugins/moment/moment.min.js"></script>
+	<script
+		src="${rc.contextPath}/statics/ui-frame/plugins/moment/locale/zh-cn.js"></script>
+	<!-- 日期插件 -->
+	<script
+		src="${rc.contextPath}/statics/ui-frame/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#startTime').datetimepicker({
+				locale : 'zh-cn',
+				format : 'YYYY-MM-DD HH:mm:ss',
+				maxDate : new Date(),
+				useCurrent : false
+			});
+			$('#endTime').datetimepicker({
+				locale : 'zh-cn',
+				format : 'YYYY-MM-DD HH:mm:ss',
+				maxDate : new Date(),
+				useCurrent : false
+			});
+			
+			$("#exportBtn").on("click", function() {
+				var dmac = $("#dmac").val();
+				var startTime = $("#startTime").val();
+				var endTime = $("#endTime").val();
+				var size = $("#size").val();
+				var param = "dmac=" + dmac + "&startTime=" + startTime + "&endTime=" + endTime + "&size=" + size;
+				var url = "${rc.contextPath}/data/export.do?" + param;
+				window.open(url);
+			});
+		})
+	</script>
+</body>
+</html>

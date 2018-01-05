@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- BootStrap Css -->
+<link
+	href="${rc.contextPath}/statics/ui-frame/css/bootstrap.min14ed.css?v=3.3.6"
+	rel="stylesheet">
+<!-- 字体图标 Css -->
+<link
+	href="${rc.contextPath}/statics/ui-frame/css/font-awesome.min93e3.css?v=4.4.0"
+	rel="stylesheet">
+<!-- Css 动画 -->
+<link href="${rc.contextPath}/statics/ui-frame/css/animate.min.css"
+	rel="stylesheet">
+<!-- BootStrap 日期插件 -->
+<link
+	href="${rc.contextPath}/statics/ui-frame/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet">
+<!-- Checkbox的美化插件 -->
+<link
+	href="${rc.contextPath}/statics/ui-frame/css/plugins/iCheck/custom.css"
+	rel="stylesheet">
+
+<!-- 基本样式 -->
+<link
+	href="${rc.contextPath}/statics/ui-frame/css/style.min862f.css?v=4.1.0"
+	rel="stylesheet">
+</head>
+<body class="gray-bg">
+	<div id="app" class="wrapper wrapper-content">
+		<div class="row">
+
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins" style="margin-bottom: 0">
+					<div class="ibox-title">
+						<h5>查询条件面板</h5>
+						<div class="ibox-tools">
+							<a href="javascript:;" @click="exportData()" style="color:gray"> <i class="fa fa-download"></i> 导出数据</a>
+						</div>
+					</div>
+					<div class="ibox-content">
+						<div class="row">
+							<!-- 
+							<div class="col-xs-2">
+								<div class="form-group">
+									<label class="font-noraml">探针Mac</label>
+									<div class='input-group'>
+										<input type='text' class="form-control"
+											v-model="searchParm.smac" />
+									</div>
+								</div>
+							</div>
+							 -->
+							<div class="col-xs-2">
+								<div class="form-group">
+									<label class="font-noraml">设备Mac</label>
+									<div class='input-group'>
+										<input type='text' class="form-control"
+											v-model="searchParm.dmac" />
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-2">
+								<div class="form-group">
+									<label class="font-noraml">开始日期</label>
+									<div class='input-group'>
+										<input type='text' class="form-control" id="startTime" />
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-2">
+								<div class="form-group">
+									<label class="font-noraml">结束日期</label>
+									<div class='input-group'>
+										<input type='text' class="form-control" id="endTime" />
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-2">
+								<div class="form-group">
+									<label class="font-noraml">自动刷新</label>
+									<div class='input-group'>
+										<label class="checkbox-inline i-checks">
+											<div class="icheckbox_square-green">
+												<input type="checkbox" value="Y">
+												<ins class="iCheck-helper"></ins>
+											</div> 设置
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-2">
+								<div class="form-group">
+									<label class="font-noraml">页码</label>
+									<div class='input-group' style="width: 100%;">
+										<input type='number' class="form-control"
+											v-model="searchParm.page" min="1" v-bind:max="totalPage" />
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-2">
+								<div class="form-group">
+									<label class="font-noraml">显示条数</label>
+	                                <div class="input-group" style="width: 100%;">
+	                                	<select v-model="searchParm.size" class="form-control">
+		                                	<option value="10">10</option>
+		                                	<option value="50">50</option>
+		                                	<option value="100">100</option>
+		                                	<option value="500">500</option>
+		                                	<option value="1000">1000</option>
+		                                	<option value="5000">5000</option>
+		                                </select>
+		                            </div>
+		                        </div>
+							</div>
+							
+							<div class="col-xs-2">
+								<div class="form-group">
+									<label class="font-noraml">检索</label>
+									<div class="btn-group" style="display: block;">
+										<button class="btn btn-primary" @click="search()" type="button">检索数据</button>
+									</div>
+								</div>
+							</div>
+							<!-- 
+							<div class="col-xs-4">
+								<div class="form-group">
+									<label class="font-noraml">导出</label>
+									<div class="btn-group" style="display: block;">
+										<button class="btn"  type="button">导出当前页</button>
+										<button class="btn" type="button">导出所有</button>
+									</div>
+								</div>
+							</div>
+							 -->
+							
+						</div>
+					</div>
+				</div>
+				<div class="ibox float-e-margins">
+					<div class="ibox-content"
+						style="padding-left: 0; padding-right: 0;">
+						<div style="width: 100%; padding: 6px 20px;">
+							<p>
+								有<span>{{total}}</span>条数据，每页显示<span>{{size}}</span>条数据，共分<span>{{totalPage}}</span>页，当前显示的是第<span>{{page}}</span>页。
+							</p>
+						</div>
+						<div class="fixed-table-body">
+							<table class="table table-hover table-condensed">
+								<thead>
+									<tr>
+										<th><div class="th-inner">时间</div></th>
+										<!-- <th><div class="th-inner">探针MAC</div></th> -->
+										<th><div class="th-inner">设备MAC</div></th>
+										<th><div class="th-inner">值</div></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="(item, index) in datas">
+										<td>{{item.ts | formatDateTime}}</td>
+										<!-- <td>{{item.smac}}</td> -->
+										<td>{{item.dmac}}</td>
+										<td>{{item.rssi}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Jquery Dom -->
+	<script
+		src="${rc.contextPath}/statics/ui-frame/js/jquery.min.js?v=2.1.4"></script>
+	<!-- BootStrap Js -->
+	<script
+		src="${rc.contextPath}/statics/ui-frame/js/bootstrap.min.js?v=3.3.6"></script>
+	<!-- Checkbox的美化插件 -->
+	<script
+		src="${rc.contextPath}/statics/ui-frame/js/plugins/iCheck/icheck.min.js"></script>
+	<script
+		src="${rc.contextPath}/statics/ui-frame/js/plugins/layer/layer.min.js"></script>
+	<!-- 日期格式化插件 -->
+	<script
+		src="${rc.contextPath}/statics/ui-frame/plugins/moment/moment.min.js"></script>
+	<script
+		src="${rc.contextPath}/statics/ui-frame/plugins/moment/locale/zh-cn.js"></script>
+	<!-- 日期插件 -->
+	<script
+		src="${rc.contextPath}/statics/ui-frame/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<!-- Vue MV-VM框架 -->
+	<script src="${rc.contextPath}/statics/ui-frame/js/vue.min.js"></script>
+
+	<script type="text/javascript">
+		"use strict";
+		!function(_d, _w, _j, _v) {
+
+			var data = {
+				datas : [],
+				total : 0,
+				page : 1,
+				size : 50,
+				totalPage : 0,
+				searchParm : {
+					page : 1,
+					size : 50,
+					dmac : '',
+					startTime : '',
+					endTime : '',
+					authrefresh : ''
+				}
+			};
+
+			var methods = {
+				loadData : function() {
+					const that = this;
+					that.datas = [];
+					_j.post("${rc.contextPath}/data/analysis.do",
+							that.searchParm, function(res) {
+								if (res.success) {
+									that.datas = res.data;
+
+									that.total = res.total;
+									that.totalPage = res.totalPage;
+									that.page = res.page;
+									that.size = res.size;
+
+									that.searchParm.page = res.page;
+									that.searchParm.size = res.size;
+
+								} else {
+									layer.alert("无更多数据");
+								}
+							}, "json");
+				},
+				search : function() {
+					const that = this;
+					that.searchParm.startTime = _j("#startTime").val();
+					that.searchParm.endTime = _j("#endTime").val();
+					that.loadData();
+				},
+				exportData : function() {
+					layer.open({
+    		    	    type: 2,
+    		    	    title: '导出数据',
+    		    	    closeBtn: !0,
+    		    	    area: ['588px', '384px'],
+    		    	    content: ['${rc.contextPath}/export.do'],
+    		    	    cancel: function(index, layero) {
+    		    	    	layer.close(index);
+        	    		}
+    		    	});
+				}
+			};
+			new _v({
+				el : '#app',
+				data : data,
+				methods : methods,
+				filters : {
+					formatDateTime : function(time) {
+						return moment(time * 1000)
+								.format("YYYY-MM-DD HH:mm:ss");
+					}
+				},
+				created : function() {
+				},
+				mounted : function() {
+					var that = this;
+					that.loadData();
+					// 日期控件初始化
+					$('#startTime').datetimepicker({
+						locale : 'zh-cn',
+						format : 'YYYY-MM-DD HH:mm:ss',
+						maxDate : new Date(),
+						useCurrent : false
+					});
+					$('#endTime').datetimepicker({
+						locale : 'zh-cn',
+						format : 'YYYY-MM-DD HH:mm:ss',
+						maxDate : new Date(),
+						useCurrent : false
+					});
+
+					var refre = false;
+
+					$(".i-checks").iCheck({
+						checkboxClass : "icheckbox_square-green",
+						radioClass : "iradio_square-green"
+					}).on('ifChecked', function(event) {
+						refre = true;
+					}).on('ifUnchecked', function(event) {
+						refre = false;
+					});
+
+					setTimeout(function() {
+						_j("body").fadeIn(40);
+					});
+
+					setInterval(function() {
+						if (refre) {
+							that.loadData();
+						}
+					}, 5000);
+				}
+			})
+		}(document, window, jQuery, Vue)
+	</script>
+</body>
+</html>

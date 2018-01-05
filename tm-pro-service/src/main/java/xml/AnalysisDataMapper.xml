@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.tm.pro.mapper.AnalysisDataMapper">
+  <resultMap id="BaseResultMap" type="org.tm.pro.entity.AnalysisData">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="smac" jdbcType="VARCHAR" property="smac" />
+    <result column="dmac" jdbcType="VARCHAR" property="dmac" />
+    <result column="rssi" jdbcType="INTEGER" property="rssi" />
+    <result column="ts" jdbcType="BIGINT" property="ts" />
+    <result column="ct" jdbcType="BIGINT" property="ct" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, smac, dmac, rssi, ts, ct
+  </sql>
+  <select id="selectByExample" parameterType="org.tm.pro.entity.AnalysisDataExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_analysis_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_analysis_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_analysis_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="org.tm.pro.entity.AnalysisDataExample">
+    delete from tb_analysis_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="org.tm.pro.entity.AnalysisData">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_analysis_data (smac, dmac, rssi, 
+      ts, ct)
+    values (#{smac,jdbcType=VARCHAR}, #{dmac,jdbcType=VARCHAR}, #{rssi,jdbcType=INTEGER}, 
+      #{ts,jdbcType=BIGINT}, #{ct,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="org.tm.pro.entity.AnalysisData">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_analysis_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="smac != null">
+        smac,
+      </if>
+      <if test="dmac != null">
+        dmac,
+      </if>
+      <if test="rssi != null">
+        rssi,
+      </if>
+      <if test="ts != null">
+        ts,
+      </if>
+      <if test="ct != null">
+        ct,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="smac != null">
+        #{smac,jdbcType=VARCHAR},
+      </if>
+      <if test="dmac != null">
+        #{dmac,jdbcType=VARCHAR},
+      </if>
+      <if test="rssi != null">
+        #{rssi,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null">
+        #{ts,jdbcType=BIGINT},
+      </if>
+      <if test="ct != null">
+        #{ct,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="org.tm.pro.entity.AnalysisDataExample" resultType="java.lang.Long">
+    select count(*) from tb_analysis_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_analysis_data
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.smac != null">
+        smac = #{record.smac,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dmac != null">
+        dmac = #{record.dmac,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rssi != null">
+        rssi = #{record.rssi,jdbcType=INTEGER},
+      </if>
+      <if test="record.ts != null">
+        ts = #{record.ts,jdbcType=BIGINT},
+      </if>
+      <if test="record.ct != null">
+        ct = #{record.ct,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_analysis_data
+    set id = #{record.id,jdbcType=INTEGER},
+      smac = #{record.smac,jdbcType=VARCHAR},
+      dmac = #{record.dmac,jdbcType=VARCHAR},
+      rssi = #{record.rssi,jdbcType=INTEGER},
+      ts = #{record.ts,jdbcType=BIGINT},
+      ct = #{record.ct,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="org.tm.pro.entity.AnalysisData">
+    update tb_analysis_data
+    <set>
+      <if test="smac != null">
+        smac = #{smac,jdbcType=VARCHAR},
+      </if>
+      <if test="dmac != null">
+        dmac = #{dmac,jdbcType=VARCHAR},
+      </if>
+      <if test="rssi != null">
+        rssi = #{rssi,jdbcType=INTEGER},
+      </if>
+      <if test="ts != null">
+        ts = #{ts,jdbcType=BIGINT},
+      </if>
+      <if test="ct != null">
+        ct = #{ct,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.tm.pro.entity.AnalysisData">
+    update tb_analysis_data
+    set smac = #{smac,jdbcType=VARCHAR},
+      dmac = #{dmac,jdbcType=VARCHAR},
+      rssi = #{rssi,jdbcType=INTEGER},
+      ts = #{ts,jdbcType=BIGINT},
+      ct = #{ct,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
